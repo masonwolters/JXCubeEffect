@@ -11,6 +11,7 @@
 
 #define screenHeight ([[UIScreen mainScreen]bounds].size.height)
 #define screenWidth ([[UIScreen mainScreen]bounds].size.width)
+#define numberOfPages 6
 @interface JXCViewController (){
     float _newOriginX;
     float _newOriginY;
@@ -65,29 +66,13 @@
 
 #pragma mark scrollview delegate
 
-/* It's gonna be painful here if you have a hundred pages in scrollview */
 -(void)scrollViewDidScroll:(UIScrollView *)sender{
-    if (sender.contentOffset.y >= 0 && sender.contentOffset.y <= screenHeight) {
-        [_transform transform:-(sender.contentOffset.y/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:0]];
-    }
-    else if (sender.contentOffset.y >= screenHeight && sender.contentOffset.y <= screenHeight*2){
-        [_transform transform:-((sender.contentOffset.y-screenHeight*1)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:1]];
-        
-    }
-    else if (sender.contentOffset.y >= screenHeight && sender.contentOffset.y <= screenHeight*3){
-        [_transform transform:-((sender.contentOffset.y-screenHeight*2)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:2]];
-        
-    }
-    else if (sender.contentOffset.y >= screenHeight && sender.contentOffset.y <= screenHeight*4){
-        [_transform transform:-((sender.contentOffset.y-screenHeight*3)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:3]];
-        
-    }
-    else if (sender.contentOffset.y >= screenHeight && sender.contentOffset.y <= screenHeight*5){
-        [_transform transform:-((sender.contentOffset.y-screenHeight*4)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:4]];
-        
-    }
-    else if (sender.contentOffset.y >= screenHeight && sender.contentOffset.y <= screenHeight*6){
-        [_transform transform:-((sender.contentOffset.y-screenHeight*5)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:5]];
+
+    for (int i = 0; i < numberOfPages; i++) {
+        if (sender.contentOffset.y >= 0 && sender.contentOffset.y <= screenHeight*(i+1)) {
+            [_transform transform:-((sender.contentOffset.y-screenHeight*i)/800) x:10 y:0 z:0 inView:[_scrollView.subviews objectAtIndex:i]];
+            break;
+        }
     }
 
 }
